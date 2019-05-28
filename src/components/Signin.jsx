@@ -1,25 +1,19 @@
 import React, { Component } from 'react';
+import NavigationBar from './navigation/NavigationBar.jsx';
 
 export default class Signin extends Component {
   constructor(props) {
     super(props);
   }
-
+  
   render() {
-    const { handleSignIn } = this.props;
-
+    console.log("Signin.jsx render()....")
+    const { handleSignIn, userSession } = this.props;
+ 
     return (
       <div className="panel-landing" id="section-1">
-        <h1 className="landing-heading">Hello, Blockstack!</h1>
-        <p className="lead">
-          <button
-            className="btn btn-primary btn-lg"
-            id="signin-button"
-            onClick={ handleSignIn.bind(this) }
-          >
-            Sign In with Blockstack
-          </button>
-        </p>
+        <NavigationBar userSession={userSession} handleSignIn={handleSignIn}/>
+         
       </div>
     );
   }

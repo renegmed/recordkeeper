@@ -1,46 +1,60 @@
 import React, { Component } from 'react';
-import {
-  Person,
-} from 'blockstack';
+import { Switch, Route, Redirect } from 'react-router-dom';
+
+import NavigationBar from './navigation/NavigationBar.jsx';
+import {  Person, UserSession, AppConfig, } from 'blockstack';
+
+import LocationDropdown from './LocationDropdown.jsx';
+import LocationCategoryDropdown from './LocationCategoryDropdown.jsx';
 
 const avatarFallbackImage = 'https://s3.amazonaws.com/onename/avatar-placeholder.png';
 
 export default class Profile extends Component {
   constructor(props) {
   	super(props);
+    this.userSession = new UserSession(new AppConfig(['store_write']))
+ 
+  }
 
-  	this.state = {
-  	  person: {
-  	  	name() {
-          return 'Anonymous';
-        },
-  	  	avatarUrl() {
-  	  	  return avatarFallbackImage;
-  	  	},
-  	  },
-  	};
+  signOut(e) {
+    console.log("Profile.jsx Signing out....")
+    e.preventDefault()
+    this.userSession.signUserOut()
+    window.location='/'
   }
 
   render() {
-    const { handleSignOut, userSession } = this.props;
-    const { person } = this.state;
+    console.log("Profile.jsx render() ...")
+    const { userSession } = this.props;
+    //const { person } = this.state;
+    const username = this.userSession.loadUserData().username;
+    console.log("Profile.jsx username: ", username)
     return (
-      !userSession.isSignInPending() ?
-      <div className="panel-welcome" id="section-2">
-        <div className="avatar-section">
-          <img src={ person.avatarUrl() ? person.avatarUrl() : avatarFallbackImage } className="img-rounded avatar" id="avatar-image" />
+      <section>
+        <div>
+          <NavigationBar userSession={userSession} signOut={this.signOut.bind(this)} username={username}/>
         </div>
-        <h1>Hello, <span id="heading-name">{ person.name() ? person.name() : 'Nameless Person' }</span>!</h1>
-        <p className="lead">
-          <button
-            className="btn btn-primary btn-lg"
-            id="signout-button"
-            onClick={ handleSignOut.bind(this) }
-          >
-            Logout
-          </button>
-        </p>
-      </div> : null
+        <Switch>
+          <Route 
+            path='/location'
+            render={
+              routeProps => <LocationDropdown
+               {...routeProps}
+              />
+            }
+          />
+          <Route 
+            path='/categories'
+            render={
+              routeProps => <LocationCategoryDropdown
+              {...routeProps}
+             />
+            }
+          />
+      </Switch>   
+
+      </section>
+     
     );
   }
 

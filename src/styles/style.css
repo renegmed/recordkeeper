@@ -1,6 +1,6 @@
 /* Globals */
 a,a:focus,a:hover{color:#fff;}
-html,body{height:100%;background-color:#E91E63;}
+html,body{height:100%;background-color:rgb(77, 128, 236);}
 body{color:#fff;text-align:center;}
 .hide{display:none;}
 .landing-heading{font-family:'Source Code Pro',monospace;font-weight:400;}
@@ -26,3 +26,7 @@ body{color:#fff;text-align:center;}
 
 /* Input */
 input, textarea{color:#000;}
+
+.navbar {
+    background-color: rgb(33, 31, 109) !important;
+}
